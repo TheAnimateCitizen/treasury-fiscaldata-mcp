@@ -428,9 +428,14 @@ async def monthly_treasury_statement(
         return {"error": str(exc)}
     res.pop("_labels", None)
     rows = res.pop("data", [])
+    # drop parent/header rows (e.g. "FY 2026") that carry no amounts
+    _amt_fields = ("current_month_gross_rcpt_amt", "current_month_gross_outly_amt",
+                   "current_month_dfct_sur_amt")
+    rows = [r for r in rows if any(r.get(k) not in (None, "null", "") for k in _amt_fields)]
     if classification:
         s = classification.lower()
-        rows = [r for r in rows if s in (r.get("classification_desc", "") or "").lower()][:limit]
+        rows = [r for r in rows if s in (r.get("classification_desc", "") or "").lower()]
+    rows = rows[:limit]
     res["classification"] = classification
     res["count"] = len(rows)
     res["rows"] = [{
