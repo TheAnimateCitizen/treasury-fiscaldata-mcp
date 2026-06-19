@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "treasury-fiscaldata": {
+      "command": "/absolute/path/to/treasury-fiscaldata-mcp/.venv/bin/python",
+      "args": ["/absolute/path/to/treasury-fiscaldata-mcp/fiscaldata_mcp.py"]
+    }
+  }
+}
